@@ -20,7 +20,7 @@ jobs:
           python-version: '3.7.11'
 
       - name: Install Requirements
-        run:  pip install flask pytest flask-wtf
+        run:  pip install flask flask-wtf pylint pytest pytest-cov
               
       - name: Unit Test
         run: python -m unittest -v test
@@ -31,7 +31,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0  
+          fetch-depth: 0
+      - name: Running pytest
+        run: |
+          pytest -v  --cov --cov-report=xml --cov-report=html
+      - uses: actions/upload-artifact@v2
+        with:
+          name: code-coverage
+          path: htmlcov  
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
