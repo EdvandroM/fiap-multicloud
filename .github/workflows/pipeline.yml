@@ -30,7 +30,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Unit Test
-        run: python -m unittest -v --cov --cov-report=xml --cov-report=html
+        run: python -m unittest -v
       - uses: actions/upload-artifact@v2
         with:
           name: code-coverage
