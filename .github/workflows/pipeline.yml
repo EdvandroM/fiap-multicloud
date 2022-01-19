@@ -30,7 +30,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Unit Test
-        run: python -m unittest -v
+        run: python -m unittest -v test
       - uses: actions/upload-artifact@v2
         with:
           name: code-coverage
