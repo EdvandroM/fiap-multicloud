@@ -24,6 +24,9 @@ jobs:
         
       - name: Unit Test
         run:  python -m unittest -v test
+
+      - name: Coverage Test # Teste
+        run:  coverage xml
     
   sonarcloud:
     name: SonarCloud
@@ -32,8 +35,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0  
-      - name: Coverage Test # Teste
-        run:  coverage xml
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
