@@ -27,6 +27,9 @@ jobs:
 
       - name: Coverage Test # Teste
         run:  coverage xml
+
+      - name: Coverage Debug # Teste
+        run:  coverage debug config
     
   sonarcloud:
     name: SonarCloud
