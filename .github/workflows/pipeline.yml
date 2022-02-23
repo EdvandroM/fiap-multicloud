@@ -52,28 +52,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Autenticação do Heroku CLI via API TOKEN
-      # https://devcenter.heroku.com/articles/authentication
-      - name: Heroku Login
-        run: | 
-            cat > ~/.netrc <<EOF
-              machine api.heroku.com
-                login $HEROKU_EMAIL
-                password $HEROKU_API_KEY
-              machine git.heroku.com
-                login $HEROKU_EMAIL
-                password $HEROKU_API_KEY
-            EOF
-        env:
-            HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-            HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+      - name: Login to Heroku Container registry
+        env: 
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:login
 
-      # Adicionando o Repositório Remoto do Heroku para poder enviar o código da app
-      - name: Add Heroku Remote
-        run: heroku git:remote --app $HEROKU_APP_NAME
+      - name: Build and Push
         env:
-            HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web
 
-      # Enviando o código da App para o Heroku fazer Deploy
-      - name: Push to Heroku & Deploy
-        run: git push heroku HEAD:main --force
+      - name: Deploy Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web
